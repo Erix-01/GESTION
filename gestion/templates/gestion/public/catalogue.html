@@ -1,0 +1,45 @@
+{% extends 'gestion/base.html' %}
+
+{% block title %}Catalogue - ACA Location{% endblock %}
+
+{% block page_title %}Catalogue des véhicules{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between mb-4">
+    <h2>Nos véhicules disponibles</h2>
+    <a href="/admin/" class="btn btn-outline-secondary">Espace Admin</a>
+</div>
+
+<div class="row">
+    {% for vehicule in vehicules %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            {% if vehicule.image %}
+            <img src="{{ vehicule.image.url }}" class="card-img-top" alt="{{ vehicule }}" style="object-fit:cover; height:200px;"/>
+            {% else %}
+            <div class="bg-light d-flex align-items-center justify-content-center" style="height:200px;">
+                <i class="fas fa-car fa-3x text-muted"></i>
+            </div>
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ vehicule.marque }} {{ vehicule.modele }}</h5>
+                <p class="card-text">
+                    Type: {{ vehicule.get_type_vehicule_display }}<br>
+                    Année: {{ vehicule.annee }}<br>
+                    Cylindrée: {{ vehicule.cylindree|default:'-' }}<br>
+                    Portes: {{ vehicule.nombre_portes|default:'-' }}
+                </p>
+            </div>
+            <div class="card-footer d-flex justify-content-between align-items-center">
+                <strong>{{ vehicule.prix_journalier }} FCFA / jour</strong>
+                <a href="/admin/gestion/vehicule/{{ vehicule.id }}/change/" class="btn btn-sm btn-outline-primary">Détails / Réserver</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center py-5">
+        <p class="text-muted">Aucun véhicule disponible pour le moment.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

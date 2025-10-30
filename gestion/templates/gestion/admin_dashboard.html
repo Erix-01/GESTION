@@ -1,0 +1,100 @@
+
+{% extends 'gestion/base.html' %}
+{% block page_title %}Admin Dashboard{% endblock %}
+{% block content %}
+{% if not request.user.is_staff %}
+  <div class="alert alert-warning">Accès réservé au personnel.</div>
+{% else %}
+  <!-- Statistiques -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="card p-3">
+        <h5>Contrats par mois</h5>
+        <canvas id="contratsChart" height="140"></canvas>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card p-3">
+        <h5>Occupation des véhicules</h5>
+        <canvas id="vehiculesChart" height="140"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gestion des Clients -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card p-3">
+        <h5>Gestion des Clients</h5>
+        <div class="btn-group">
+          <a href="{% url 'liste_clients' %}" class="btn btn-primary me-2">Liste des Clients</a>
+          <a href="{% url 'ajouter_client' %}" class="btn btn-success me-2">Ajouter un Client</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gestion des Véhicules -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card p-3">
+        <h5>Gestion des Véhicules</h5>
+        <div class="btn-group">
+          <a href="{% url 'liste_vehicules' %}" class="btn btn-primary me-2">Liste des Véhicules</a>
+          <a href="{% url 'ajouter_vehicule' %}" class="btn btn-success me-2">Ajouter un Véhicule</a>
+          <a href="{% url 'catalogue' %}" class="btn btn-info me-2">Voir le Catalogue</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gestion des Contrats -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card p-3">
+        <h5>Gestion des Contrats</h5>
+        <div class="btn-group">
+          <a href="{% url 'liste_contrats' %}" class="btn btn-primary me-2">Liste des Contrats</a>
+          <a href="{% url 'creer_contrat' %}" class="btn btn-success me-2">Créer un Contrat</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audit et Exports -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card p-3">
+        <h5>Outils Administratifs</h5>
+        <div class="btn-group mb-3">
+          <a href="{% url 'audit_list' %}" class="btn btn-warning me-2">Journal d'Audit</a>
+        </div>
+        <div class="d-block">
+          <h6>Exports</h6>
+          <a href="{% url 'export_clients_csv' %}" class="btn btn-secondary me-2">Exporter Clients (CSV)</a>
+          <a href="{% url 'export_vehicules_csv' %}" class="btn btn-secondary me-2">Exporter Véhicules (CSV)</a>
+          <a href="{% url 'export_contrats_csv' %}" class="btn btn-secondary">Exporter Contrats (CSV)</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+{% endblock %}
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+async function fetchJSON(url){ const r = await fetch(url); if(!r.ok) return null; return await r.json(); }
+
+(async function(){
+  const contrats = await fetchJSON("{% url 'stats_contrats_par_mois' %}");
+  const months = contrats.map(x=>x.month);
+  const counts = contrats.map(x=>x.count);
+  const ctx = document.getElementById('contratsChart').getContext('2d');
+  new Chart(ctx, { type: 'bar', data: { labels: months, datasets:[{ label:'Contrats', data: counts }] }, options: {} });
+
+  const occ = await fetchJSON("{% url 'stats_occupation_vehicules' %}");
+  const ctx2 = document.getElementById('vehiculesChart').getContext('2d');
+  new Chart(ctx2, { type: 'doughnut', data: { labels: ['Disponibles','Occupés'], datasets:[{ data: [occ.disponible, occ.occupees] }] }, options: {} });
+})();
+</script>
+{% endblock %}

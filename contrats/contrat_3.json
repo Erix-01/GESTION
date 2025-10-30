@@ -1,0 +1,25 @@
+{
+    "contrat_id": 3,
+    "client": {
+        "nom": "erix",
+        "prenom": "kouassi",
+        "telephone": "0203040505",
+        "email": "erixkouassi@gmail.com"
+    },
+    "vehicule": {
+        "type": "voiture",
+        "marque": "DKVN",
+        "modele": "AS",
+        "immatriculation": "2334AA01"
+    },
+    "dates": {
+        "creation": "2025-10-30T12:31:48.500401+00:00",
+        "debut": "2025-10-30",
+        "fin": "2026-01-27"
+    },
+    "details_location": {
+        "nb_jours": 89,
+        "montant_total": 12460.0,
+        "statut": "termine"
+    }
+}

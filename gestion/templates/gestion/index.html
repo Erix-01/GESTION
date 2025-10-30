@@ -1,0 +1,184 @@
+{% extends 'gestion/base.html' %}
+
+
+
+{% block content %}
+<div class="row">
+    <!-- Cartes de statistiques -->
+    <div class="col-md-3 mb-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">{{ stats.total_clients }}</h5>
+                        <p class="card-text">Clients</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-users fa-2x text-muted"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">{{ stats.total_vehicules }}</h5>
+                        <p class="card-text">Véhicules</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-car-side fa-2x text-muted"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">{{ stats.vehicules_disponibles }}</h5>
+                        <p class="card-text">Disponibles</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-check-circle fa-2x text-muted"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">{{ stats.contrats_actifs }}</h5>
+                        <p class="card-text">Contrats Actifs</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-file-contract fa-2x text-muted"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Rappels et alertes -->
+    {% if rappels %}
+    <div class="col-12 mb-4">
+        <div class="alert alert-warning alert-warning-custom">
+            <h5><i class="fas fa-bell"></i> Rappels à envoyer</h5>
+            <ul class="mb-0">
+                {% for rappel in rappels %}
+                <li>{{ rappel }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Contrats récents -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary-custom text-white">
+                <h5 class="mb-0"><i class="fas fa-clock"></i> Contrats Récents</h5>
+            </div>
+            <div class="card-body">
+                {% if contrats_recent %}
+                <div class="list-group list-group-flush">
+                    {% for contrat in contrats_recent %}
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">{{ contrat.client }}</h6>
+                            <small class="text-{% if contrat.statut == 'actif' %}success{% elif contrat.statut == 'en_retard' %}danger{% else %}muted{% endif %}">
+                                {{ contrat.get_statut_display }}
+                            </small>
+                        </div>
+                        <p class="mb-1">{{ contrat.vehicule }}</p>
+                        <small>Jours restants: {{ contrat.jours_restants }}</small>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted">Aucun contrat récent</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Véhicules disponibles -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary-custom text-white">
+                <h5 class="mb-0"><i class="fas fa-car"></i> Véhicules Disponibles</h5>
+            </div>
+            <div class="card-body">
+                {% if vehicules_disponibles %}
+                <div class="list-group list-group-flush">
+                    {% for vehicule in vehicules_disponibles %}
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">{{ vehicule.marque }} {{ vehicule.modele }}</h6>
+                            <small class="text-success">{{ vehicule.prix_journalier }} FCFA/jour</small>
+                        </div>
+                        <p class="mb-1">{{ vehicule.get_type_vehicule_display }} • {{ vehicule.annee }}</p>
+                        <small>Immat: {{ vehicule.immatriculation }}</small>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted">Aucun véhicule disponible</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-primary-custom text-white">
+                <h5 class="mb-0"><i class="fas fa-rocket"></i> Actions Rapides</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% if request.user.is_staff %}
+                    <div class="col-md-3 mb-2">
+                        <a href="{% url 'ajouter_client' %}" class="btn btn-primary-custom w-100">
+                            <i class="fas fa-user-plus"></i> Nouveau Client
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <a href="{% url 'ajouter_vehicule' %}" class="btn btn-primary-custom w-100">
+                            <i class="fas fa-car-side"></i> Nouveau Véhicule
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <a href="{% url 'creer_contrat' %}" class="btn btn-primary-custom w-100">
+                            <i class="fas fa-file-contract"></i> Nouveau Contrat
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <a href="{% url 'liste_contrats' %}" class="btn btn-outline-primary w-100">
+                            <i class="fas fa-list"></i> Voir Contrats
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="col-12 text-center">
+                        <p>Pour gérer les clients, véhicules et contrats, veuillez utiliser l'<a href="/admin/">espace d'administration</a>.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

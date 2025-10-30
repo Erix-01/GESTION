@@ -1,0 +1,188 @@
+{% extends 'gestion/base.html' %}
+
+{% block page_title %}Créer un Contrat{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary-custom text-white">
+                <h5 class="mb-0"><i class="fas fa-file-contract"></i> Nouveau Contrat de Location</h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.client.id_for_label }}" class="form-label">Client</label>
+                            {{ form.client }}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.vehicule.id_for_label }}" class="form-label">Véhicule</label>
+                            {{ form.vehicule }}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.date_debut.id_for_label }}" class="form-label">Date de début</label>
+                            {{ form.date_debut }}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.nb_jours.id_for_label }}" class="form-label">Nombre de jours</label>
+                            {{ form.nb_jours }}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.mode_paiement.id_for_label }}" class="form-label">Mode de paiement</label>
+                            {{ form.mode_paiement }}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Montant estimé</label>
+                            <div id="montant-estime" class="form-control-plaintext">
+                                <em>Sélectionnez un véhicule et le nombre de jours</em>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Détails de paiement dynamiques -->
+                    <div id="details-paiement" class="mb-3" style="display: none;">
+                        <h5 class="mb-3">Détails du paiement</h5>
+                        
+                        <!-- Carte bancaire -->
+                        <div id="details-carte" class="details-section" style="display: none;">
+                            <div class="row">
+                                <div class="col-md-8 mb-3">
+                                    <label for="id_numero_carte" class="form-label">Numéro de carte</label>
+                                    {{ form.numero_carte }}
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="id_date_expiration" class="form-label">Date d'expiration</label>
+                                    {{ form.date_expiration }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Virement -->
+                        <div id="details-virement" class="details-section" style="display: none;">
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label for="id_rib" class="form-label">RIB/IBAN</label>
+                                    {{ form.rib }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chèque -->
+                        <div id="details-cheque" class="details-section" style="display: none;">
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label for="id_numero_cheque" class="form-label">Numéro de chèque</label>
+                                    {{ form.numero_cheque }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Paiement mobile -->
+                        <div id="details-mobile" class="details-section" style="display: none;">
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label for="id_numero_telephone" class="form-label">Numéro de téléphone</label>
+                                    {{ form.numero_telephone }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'liste_contrats' %}" class="btn btn-secondary me-md-2">
+                            <i class="fas fa-arrow-left"></i> Annuler
+                        </a>
+                        <button type="submit" class="btn btn-primary-custom">
+                            <i class="fas fa-save"></i> Créer le contrat
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const vehiculeSelect = document.getElementById('id_vehicule');
+    const nbJoursInput = document.getElementById('id_nb_jours');
+    const montantDiv = document.getElementById('montant-estime');
+    const modePaiementSelect = document.getElementById('id_mode_paiement');
+    const detailsPaiementDiv = document.getElementById('details-paiement');
+    
+    function togglePaiementDetails() {
+        const mode = modePaiementSelect.value;
+        const sections = document.querySelectorAll('.details-section');
+        
+        // Cacher tous les champs de détails
+        sections.forEach(section => section.style.display = 'none');
+        
+        // Afficher les détails appropriés selon le mode de paiement
+        if (mode) {
+            detailsPaiementDiv.style.display = 'block';
+            switch(mode) {
+                case 'carte':
+                    document.getElementById('details-carte').style.display = 'block';
+                    break;
+                case 'virement':
+                    document.getElementById('details-virement').style.display = 'block';
+                    break;
+                case 'cheque':
+                    document.getElementById('details-cheque').style.display = 'block';
+                    break;
+                case 'mobile':
+                    document.getElementById('details-mobile').style.display = 'block';
+                    break;
+                case 'especes':
+                    detailsPaiementDiv.style.display = 'none';
+                    break;
+            }
+        } else {
+            detailsPaiementDiv.style.display = 'none';
+        }
+    }
+    
+    function calculerPrix() {
+        const vehiculeId = vehiculeSelect.value;
+        const nbJours = nbJoursInput.value;
+        
+        if (vehiculeId && nbJours && nbJours > 0) {
+            fetch(`/api/calculer-prix/?vehicule_id=${vehiculeId}&nb_jours=${nbJours}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.prix) {
+                        montantDiv.innerHTML = `<strong>${data.prix} FCFA</strong>`;
+                    } else {
+                        montantDiv.innerHTML = '<em class="text-danger">Erreur de calcul</em>';
+                    }
+                })
+                .catch(error => {
+                    montantDiv.innerHTML = '<em class="text-danger">Erreur de calcul</em>';
+                });
+        } else {
+            montantDiv.innerHTML = '<em>Sélectionnez un véhicule et le nombre de jours</em>';
+        }
+    }
+    
+    // Event listeners
+    vehiculeSelect.addEventListener('change', calculerPrix);
+    nbJoursInput.addEventListener('input', calculerPrix);
+    modePaiementSelect.addEventListener('change', togglePaiementDetails);
+    
+    // Initialisation
+    togglePaiementDetails();
+});
+</script>
+{% endblock %}

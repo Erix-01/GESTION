@@ -1,0 +1,42 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>{{ title }}</h2>
+    </div>
+    <div class="card-body">
+        <h3>Détails du contrat</h3>
+        <dl class="row">
+            <dt class="col-sm-3">Client</dt>
+            <dd class="col-sm-9">{{ contrat.client }}</dd>
+            
+            <dt class="col-sm-3">Véhicule</dt>
+            <dd class="col-sm-9">{{ contrat.vehicule }}</dd>
+            
+            <dt class="col-sm-3">Date de début</dt>
+            <dd class="col-sm-9">{{ contrat.date_debut }}</dd>
+            
+            <dt class="col-sm-3">Date de fin</dt>
+            <dd class="col-sm-9">{{ contrat.date_fin }}</dd>
+            
+            <dt class="col-sm-3">Montant total</dt>
+            <dd class="col-sm-9">{{ contrat.montant_total }} FCFA</dd>
+        </dl>
+
+        <div class="alert alert-warning">
+            <h4>⚠️ Attention</h4>
+            <p>La rupture d'un contrat est une action définitive. Cette action peut entraîner des pénalités conformément aux conditions générales.</p>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group mt-4">
+                <button type="submit" class="btn btn-danger">Confirmer la rupture du contrat</button>
+                <a href="{% url 'admin:gestion_contrat_changelist' %}" class="btn btn-secondary">Annuler</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

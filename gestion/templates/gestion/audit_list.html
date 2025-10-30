@@ -1,0 +1,20 @@
+
+{% extends 'gestion/base.html' %}
+{% block page_title %}Audit Logs{% endblock %}
+{% block content %}
+  <h3>Audit Logs</h3>
+  <div class="card p-3">
+    <table class="table table-sm">
+      <thead><tr><th>Temps</th><th>Acteur</th><th>Modèle</th><th>Objet</th><th>Action</th></tr></thead>
+      <tbody>
+      {% for a in audits %}
+        <tr>
+          <td>{{ a.timestamp }}</td><td>{{ a.actor }}</td><td>{{ a.model }}</td><td>{{ a.object_id }}</td><td>{{ a.action }}</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="5">Aucun log</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

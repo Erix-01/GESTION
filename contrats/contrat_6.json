@@ -1,0 +1,25 @@
+{
+    "contrat_id": 6,
+    "client": {
+        "nom": "mariam",
+        "prenom": "noura",
+        "telephone": "0456784336566",
+        "email": "DETUGJ@gmail.com"
+    },
+    "vehicule": {
+        "type": "voiture",
+        "marque": "brabus",
+        "modele": "AMG",
+        "immatriculation": "AAA3301"
+    },
+    "dates": {
+        "creation": "2025-10-30T14:25:04.989816+00:00",
+        "debut": "2025-10-30",
+        "fin": "2025-10-31"
+    },
+    "details_location": {
+        "nb_jours": 1,
+        "montant_total": 50000.0,
+        "statut": "termine"
+    }
+}

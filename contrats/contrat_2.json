@@ -1,0 +1,25 @@
+{
+    "contrat_id": 2,
+    "client": {
+        "nom": "AGBLETOR",
+        "prenom": "KOUASSI ERIC",
+        "telephone": "0203040505",
+        "email": "erixkouassi@gmail.com"
+    },
+    "vehicule": {
+        "type": "voiture",
+        "marque": "DKVN",
+        "modele": "AS",
+        "immatriculation": "2334AA01"
+    },
+    "dates": {
+        "creation": "2025-10-30T10:17:32.237710+00:00",
+        "debut": "2025-10-30",
+        "fin": "2025-10-31"
+    },
+    "details_location": {
+        "nb_jours": 1234,
+        "montant_total": 211.0,
+        "statut": "termine"
+    }
+}

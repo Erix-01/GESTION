@@ -1,0 +1,25 @@
+{
+    "contrat_id": 7,
+    "client": {
+        "nom": "mariam",
+        "prenom": "noura",
+        "telephone": "0456784336566",
+        "email": "DETUGJ@gmail.com"
+    },
+    "vehicule": {
+        "type": "moto",
+        "marque": "MOTO1",
+        "modele": "MOTO1",
+        "immatriculation": "0000001"
+    },
+    "dates": {
+        "creation": "2025-10-30T14:32:34.194426+00:00",
+        "debut": "2025-10-30",
+        "fin": "2025-11-07"
+    },
+    "details_location": {
+        "nb_jours": 8,
+        "montant_total": 144000.0,
+        "statut": "termine"
+    }
+}

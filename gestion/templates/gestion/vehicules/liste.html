@@ -1,0 +1,84 @@
+{% extends 'gestion/base.html' %}
+
+{% block page_title %}Liste des Véhicules{% endblock %}
+
+{% block content %}
+    <div class="d-flex justify-content-between mb-4">
+    <h2>Gestion des Véhicules</h2>
+    {% if request.user.is_staff %}
+    <a href="{% url 'ajouter_vehicule' %}" class="btn btn-primary-custom">
+        <i class="fas fa-car-side"></i> Nouveau Véhicule
+    </a>
+    {% else %}
+    <a href="/catalogue/" class="btn btn-outline-secondary">Voir le catalogue</a>
+    {% endif %}
+</div>
+
+<div class="card">
+    <div class="card-header bg-primary-custom text-white">
+        <h5 class="mb-0"><i class="fas fa-car-side"></i> Liste des Véhicules</h5>
+    </div>
+    <div class="card-body">
+        {% if vehicules %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Marque</th>
+                        <th>Modèle</th>
+                        <th>Année</th>
+                        <th>Immatriculation</th>
+                        <th>Prix/Jour</th>
+                        <th>Disponibilité</th>
+                        <th>Actions</th>
+                    <tr>
+                        {% if vehicle.id %}
+                        /* Lines 36-52 omitted */
+                        <td>
+                            <a href="{% url 'modifier_vehicule' vehicule.id %}" class="btn btn-sm btn-warning">Modifier</a>
+                            <a href="{% url 'supprimer_vehicule' vehicule.id %}" class="btn btn-sm btn-danger">Supprimer</a>
+                        </td>
+                        {% else %}
+                            <span class="text-muted">ID manquant</span>
+                        {% endif %}
+                    </tr>
+                    {% for vehicule in vehicules %}
+                    <tr>
+                        <td>{{ vehicule.get_type_vehicule_display }}</td>
+                        <td>{{ vehicule.marque }}</td>
+                        <td>{{ vehicule.modele }}</td>
+                        <td>{{ vehicule.annee }}</td>
+                        <td>{{ vehicule.immatriculation }}</td>
+                        <td>{{ vehicule.prix_journalier }} FCFA</td>
+                        <td>
+                            <span class="badge bg-{% if vehicule.disponible %}success{% else %}danger{% endif %}">
+                                {{ vehicule.disponible|yesno:"Disponible,Indisponible" }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if request.user.is_staff %}
+                            <a href="{% url 'modifier_vehicule' vehicule.id %}" class="btn btn-sm btn-outline-warning">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            {% else %}
+                            <span class="text-muted">—</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-4">
+            <i class="fas fa-car-side fa-3x text-muted mb-3"></i>
+            <p class="text-muted">Aucun véhicule enregistré</p>
+            <a href="{% url 'ajouter_vehicule' %}" class="btn btn-primary-custom">
+                Ajouter le premier véhicule
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

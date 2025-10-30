@@ -1,0 +1,72 @@
+{% extends 'gestion/base.html' %}
+
+{% block page_title %}Liste des Clients{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between mb-4">
+    <h2>Gestion des Clients</h2>
+    <a href="{% url 'ajouter_client' %}" class="btn btn-primary-custom">
+        <i class="fas fa-user-plus"></i> Nouveau Client
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-header bg-primary-custom text-white">
+        <h5 class="mb-0"><i class="fas fa-users"></i> Liste des Clients</h5>
+    </div>
+    <div class="card-body">
+        {% if clients %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Téléphone</th>
+                            <th>Email</th>
+                            <th>Contrats Actifs</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for client in clients %}
+                            <tr>
+                                <td>{{ client.nom }}</td>
+                                <td>{{ client.prenom }}</td>
+                                <td>{{ client.telephone }}</td>
+                                <td>{{ client.email|default:"-" }}</td>
+                                <td>
+                                    <span class="badge bg-{% if client.contrats_actifs.count > 0 %}success{% else %}secondary{% endif %}">
+                                        {{ client.contrats_actifs.count }}
+                                    </span>
+                                </td>
+                                <td class="text-end">
+                                    <div class="btn-group">
+                                        <a href="{% url 'detail_client' id=client.id %}" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{% url 'modifier_client' id=client.id %}" class="btn btn-sm btn-outline-warning">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="{% url 'supprimer_client' id=client.id %}" class="btn btn-sm btn-outline-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="text-center py-4">
+                <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                <p class="text-muted">Aucun client enregistré</p>
+                <a href="{% url 'ajouter_client' %}" class="btn btn-primary-custom">
+                    <i class="fas fa-user-plus"></i> Ajouter un client
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends 'gestion/base.html' %}
+
+{% block page_title %}Ajouter un Véhicule{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary-custom text-white">
+                <h5 class="mb-0"><i class="fas fa-car-side"></i> Nouveau Véhicule</h5>
+            </div>
+            <div class="card-body">
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    <h5>Veuillez corriger les erreurs suivantes :</h5>
+                    <ul>
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ field.label }} : {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.type_vehicule.id_for_label }}" class="form-label">Type de véhicule *</label>
+                            {{ form.type_vehicule }}
+                            {% if form.type_vehicule.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.type_vehicule.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.immatriculation.id_for_label }}" class="form-label">Immatriculation</label>
+                            {{ form.immatriculation }}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.marque.id_for_label }}" class="form-label">Marque</label>
+                            {{ form.marque }}
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.modele.id_for_label }}" class="form-label">Modèle</label>
+                            {{ form.modele }}
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.annee.id_for_label }}" class="form-label">Année</label>
+                            {{ form.annee }}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.prix_journalier.id_for_label }}" class="form-label">Prix Journalier (FCFA)</label>
+                            {{ form.prix_journalier }}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Caractéristiques spécifiques</label>
+                            <div id="caracteristiques">
+                                {% if form.type_vehicule.value == 'voiture' or not form.type_vehicule.value %}
+                                <div class="mb-2">
+                                    <label for="{{ form.nombre_portes.id_for_label }}" class="form-label">Nombre de portes</label>
+                                    {{ form.nombre_portes }}
+                                </div>
+                                {% else %}
+                                <div class="mb-2">
+                                    <label for="{{ form.cylindree.id_for_label }}" class="form-label">Cylindrée (cc)</label>
+                                    {{ form.cylindree }}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'liste_vehicules' %}" class="btn btn-secondary me-md-2">
+                            <i class="fas fa-arrow-left"></i> Retour
+                        </a>
+                        <button type="submit" class="btn btn-primary-custom">
+                            <i class="fas fa-save"></i> Enregistrer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const typeSelect = document.getElementById('id_type_vehicule');
+    const voitureFields = document.querySelector('.voiture-fields');
+    const motoFields = document.querySelector('.moto-fields');
+    
+    function updateCaracteristiques() {
+        const type = typeSelect.value;
+        
+        if (type === 'voiture') {
+            voitureFields.style.display = 'block';
+            motoFields.style.display = 'none';
+        } else if (type === 'moto') {
+            voitureFields.style.display = 'none';
+            motoFields.style.display = 'block';
+        }
+    }
+    
+    typeSelect.addEventListener('change', updateCaracteristiques);
+    // Conserver les valeurs existantes lors du rechargement
+    updateCaracteristiques();
+});
+</script>
+{% endblock %}

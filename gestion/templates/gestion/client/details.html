@@ -1,0 +1,79 @@
+{% extends 'gestion/base.html' %}
+
+{% block page_title %}Détails du Client{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-primary-custom text-white">
+                <h5 class="mb-0"><i class="fas fa-user"></i> Informations Client</h5>
+            </div>
+            <div class="card-body">
+                <h5>{{ client.prenom }} {{ client.nom }}</h5>
+                <p><strong>Téléphone:</strong> {{ client.telephone }}</p>
+                <p><strong>Email:</strong> {{ client.email|default:"Non renseigné" }}</p>
+                <p><strong>Date d'inscription:</strong> {{ client.date_creation|date:"d/m/Y" }}</p>
+                
+                <div class="mt-3">
+                    <a href="{% url 'modifier_client' client.id %}" class="btn btn-warning btn-sm">
+                        <i class="fas fa-edit"></i> Modifier
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary-custom text-white">
+                <h5 class="mb-0"><i class="fas fa-history"></i> Historique des Locations</h5>
+            </div>
+            <div class="card-body">
+                {% if contrats %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Véhicule</th>
+                                <th>Date Début</th>
+                                <th>Date Fin</th>
+                                <th>Durée</th>
+                                <th>Montant</th>
+                                <th>Statut</th>
+                                <th>Jours Restants</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for contrat in contrats %}
+                            <tr>
+                                <td>{{ contrat.vehicule }}</td>
+                                <td>{{ contrat.date_debut|date:"d/m/Y" }}</td>
+                                <td>{{ contrat.date_fin|date:"d/m/Y" }}</td>
+                                <td>{{ contrat.nb_jours }} jours</td>
+                                <td>{{ contrat.montant_total }} FCFA</td>
+                                <td>
+                                    <span class="badge bg-{% if contrat.statut == 'actif' %}success{% elif contrat.statut == 'en_retard' %}danger{% else %}secondary{% endif %}">
+                                        {{ contrat.get_statut_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if contrat.statut == 'actif' %}
+                                        {{ contrat.jours_restants }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">Aucun contrat pour ce client</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

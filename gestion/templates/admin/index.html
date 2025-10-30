@@ -1,0 +1,127 @@
+{% extends 'gestion/base.html' %}
+
+{% block page_title %}Administration - Tableau de bord{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Stat cards similar to public dashboard -->
+    <div class="col-md-3 mb-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">{{ stats.total_clients }}</h5>
+                        <p class="card-text">Clients</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-users fa-2x text-muted"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">{{ stats.total_vehicules }}</h5>
+                        <p class="card-text">Véhicules</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-car-side fa-2x text-muted"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">{{ stats.vehicules_disponibles }}</h5>
+                        <p class="card-text">Disponibles</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-check-circle fa-2x text-muted"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">{{ stats.contrats_actifs }}</h5>
+                        <p class="card-text">Contrats Actifs</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-file-contract fa-2x text-muted"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary-custom text-white">
+                <h5 class="mb-0"><i class="fas fa-clock"></i> Contrats Récents</h5>
+            </div>
+            <div class="card-body">
+                {% if contrats_recent %}
+                <div class="list-group list-group-flush">
+                    {% for contrat in contrats_recent %}
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">{{ contrat.client }}</h6>
+                            <small class="text-{% if contrat.statut == 'actif' %}success{% elif contrat.statut == 'en_retard' %}danger{% else %}muted{% endif %}">
+                                {{ contrat.get_statut_display }}
+                            </small>
+                        </div>
+                        <p class="mb-1">{{ contrat.vehicule }}</p>
+                        <small>Jours restants: {{ contrat.jours_restants }}</small>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted">Aucun contrat récent</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary-custom text-white">
+                <h5 class="mb-0"><i class="fas fa-car"></i> Véhicules Disponibles</h5>
+            </div>
+            <div class="card-body">
+                {% if vehicules_disponibles %}
+                <div class="list-group list-group-flush">
+                    {% for vehicule in vehicules_disponibles %}
+                    <div class="list-group-item d-flex align-items-center">
+                        {% if vehicule.image %}
+                        <img src="{{ vehicule.image.url }}" alt="{{ vehicule }}" style="width:100px;height:60px;object-fit:cover;margin-right:12px;border-radius:4px;"/>
+                        {% endif %}
+                        <div>
+                            <h6 class="mb-0">{{ vehicule.marque }} {{ vehicule.modele }}</h6>
+                            <small class="text-muted">{{ vehicule.get_type_vehicule_display }} • {{ vehicule.annee }}</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted">Aucun véhicule disponible</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
