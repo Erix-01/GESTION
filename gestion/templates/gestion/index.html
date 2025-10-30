@@ -150,7 +150,7 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    {% if request.user.is_staff %}
+                    
                     <div class="col-md-3 mb-2">
                         <a href="{% url 'ajouter_client' %}" class="btn btn-primary-custom w-100">
                             <i class="fas fa-user-plus"></i> Nouveau Client
@@ -166,6 +166,7 @@
                             <i class="fas fa-file-contract"></i> Nouveau Contrat
                         </a>
                     </div>
+                    {% if request.user.is_staff %}
                     <div class="col-md-3 mb-2">
                         <a href="{% url 'liste_contrats' %}" class="btn btn-outline-primary w-100">
                             <i class="fas fa-list"></i> Voir Contrats
