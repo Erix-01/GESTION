@@ -72,14 +72,16 @@
         <div class="d-block">
           <h6>Exports</h6>
           <a href="{% url 'export_clients_csv' %}" class="btn btn-secondary me-2">Exporter Clients (CSV)</a>
+          <a href="{% url 'export_clients_en_retard_csv' %}" class="btn btn-danger me-2">Clients en retard (CSV)</a>
           <a href="{% url 'export_vehicules_csv' %}" class="btn btn-secondary me-2">Exporter Véhicules (CSV)</a>
+          <a href="{% url 'export_vehicules_loues_csv' %}" class="btn btn-info me-2">Véhicules loués (CSV)</a>
           <a href="{% url 'export_contrats_csv' %}" class="btn btn-secondary">Exporter Contrats (CSV)</a>
         </div>
       </div>
     </div>
   </div>
 {% endif %}
-<h1>hoolo</h1>
+ 
 {% endblock %}
 {% block extra_js %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

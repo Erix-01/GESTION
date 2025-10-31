@@ -47,6 +47,43 @@ def export_vehicules_csv(request):
     
     return response
 
+
+@staff_member_required
+def export_clients_en_retard_csv(request):
+    """Export CSV des clients ayant des contrats en retard."""
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="clients_en_retard.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Nom', 'Prénom', 'Email', 'Téléphone', 'Contrat ID', 'Véhicule', 'Date fin prévue', 'Jours de retard'])
+
+    today = timezone.now().date()
+    contrats_retard = Contrat.objects.filter(statut='en_retard')
+    for contrat in contrats_retard:
+        jours_retard = (today - contrat.date_fin).days if contrat.date_fin else ''
+        client = contrat.client
+        writer.writerow([client.nom, client.prenom, client.email, client.telephone, contrat.id, f"{contrat.vehicule.marque} {contrat.vehicule.modele}", contrat.date_fin, jours_retard])
+
+    return response
+
+
+@staff_member_required
+def export_vehicules_loues_csv(request):
+    """Export CSV des véhicules actuellement loués (contrats actifs)."""
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="vehicules_loues.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Véhicule', 'Immatriculation', 'Client', 'Date début', 'Date fin prévue', 'Contrat ID'])
+
+    contrats_actifs = Contrat.objects.filter(statut='actif')
+    for contrat in contrats_actifs:
+        vehicule = contrat.vehicule
+        client = contrat.client
+        writer.writerow([f"{vehicule.marque} {vehicule.modele}", vehicule.immatriculation, f"{client.nom} {client.prenom}", contrat.date_debut, contrat.date_fin, contrat.id])
+
+    return response
+
 @staff_member_required
 @staff_member_required
 def audit_list(request):
