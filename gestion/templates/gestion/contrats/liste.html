@@ -1,4 +1,5 @@
 {% extends 'gestion/base.html' %}
+{% load currency %}
 
 {% block page_title %}Liste des Contrats{% endblock %}
 
@@ -57,7 +58,7 @@
                                 -
                             {% endif %}
                         </td>
-                        <td>{{ contrat.montant_total }} FCFA</td>
+                        <td>{{ contrat.montant_total|format_fcfa }}</td>
                         <td>
                             <span class="badge bg-{% if contrat.statut == 'actif' %}success{% elif contrat.statut == 'en_retard' %}danger{% else %}secondary{% endif %}">
                                 {{ contrat.get_statut_display }}

@@ -17,7 +17,7 @@ urlpatterns = [
     path('vehicules/modifier/<int:id>/', views.modifier_vehicule, name='modifier_vehicule'),
     path('vehicules/supprimer/<int:id>/', views.confirmer_suppression, {'type_objet': 'vehicule'}, name='supprimer_vehicule'),
     path('audit/',views.audit_list, name='audit_list'),
-    path('admin/', views.admin_dashboard, name='admin_dashboard'),
+    path('admin_dashbord/', views.admin_dashboard, name='admin_dashboard'),
     # Page publique (client)
     path('catalogue/', views.public_catalogue, name='catalogue'),
 

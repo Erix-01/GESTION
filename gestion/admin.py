@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import AdminSite
+from django.contrib.auth.models import User, Group
+from django.contrib.auth.admin import UserAdmin, GroupAdmin
 from django.utils.html import format_html
 from django.utils import timezone
 from django.db.models import Count, Sum
@@ -176,3 +178,12 @@ class ContratAdmin(admin.ModelAdmin):
 custom_admin_site.register(Client, ClientAdmin)
 custom_admin_site.register(Vehicule, VehiculeAdmin)
 custom_admin_site.register(Contrat, ContratAdmin)
+
+# Enregistrer la gestion des utilisateurs et groupes pour l'admin personnalisé
+try:
+    custom_admin_site.register(User, UserAdmin)
+    custom_admin_site.register(Group, GroupAdmin)
+except Exception:
+    # Si pour une raison quelconque l'enregistrement échoue (environnements de test spéciaux),
+    # on ignore pour ne pas casser l'admin principal.
+    pass

@@ -7,7 +7,7 @@
 {% block content %}
 <div class="d-flex justify-content-between mb-4">
     <h2>Nos véhicules disponibles</h2>
-    <a href="/admin/" class="btn btn-outline-secondary">Espace Admin</a>
+    
 </div>
 
 <div class="row">
@@ -32,7 +32,9 @@
             </div>
             <div class="card-footer d-flex justify-content-between align-items-center">
                 <strong>{{ vehicule.prix_journalier }} FCFA / jour</strong>
+                {% if request.user.is_staff %}
                 <a href="/admin/gestion/vehicule/{{ vehicule.id }}/change/" class="btn btn-sm btn-outline-primary">Détails / Réserver</a>
+                {% endif %}
             </div>
         </div>
     </div>

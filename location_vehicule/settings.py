@@ -42,7 +42,7 @@ ROOT_URLCONF = 'location_vehicule.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [ 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -98,7 +98,7 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
 CSRF_COOKIE_SECURE = False  # Set to True in production
-SESSION_COOKIE_SECURE = False  # Set to True in production
+SESSION_COOKIE_SECURE = True  # Set to True in production
 
 # Logging configuration
 LOGGING = {

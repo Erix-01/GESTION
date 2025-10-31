@@ -376,7 +376,8 @@ def detail_contrat(request, id):
         'contrat': contrat,
         'jours_restants': jours_restants,
     }
-    return render(request, 'gestion/contrats/retour.html', context)
+    # Afficher une page de détails dédiée (non le formulaire de retour)
+    return render(request, 'gestion/contrats/detail.html', context)
 
 
 @staff_member_required

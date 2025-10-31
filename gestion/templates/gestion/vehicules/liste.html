@@ -39,8 +39,7 @@
                             <a href="{% url 'modifier_vehicule' vehicule.id %}" class="btn btn-sm btn-warning">Modifier</a>
                             <a href="{% url 'supprimer_vehicule' vehicule.id %}" class="btn btn-sm btn-danger">Supprimer</a>
                         </td>
-                        {% else %}
-                            <span class="text-muted">ID manquant</span>
+                       
                         {% endif %}
                     </tr>
                     {% for vehicule in vehicules %}

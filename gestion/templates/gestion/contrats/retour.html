@@ -1,4 +1,5 @@
 {% extends 'gestion/base.html' %}
+{% load currency %}
 
 {% block page_title %}Retour de Véhicule{% endblock %}
 
@@ -26,7 +27,7 @@
                     <div class="alert alert-warning">
                         <h6><i class="fas fa-info-circle"></i> Retour anticipé</h6>
                         <p>Retour avant la date prévue. Un remboursement partiel sera calculé.</p>
-                        {% with remboursement = contrat.calculer_remboursement %}
+                        {% with remboursement = contrat.calculer_remboursement(timezone.now) %}
                         <p><strong>Remboursement estimé:</strong> {{ remboursement|format_fcfa }}</p>
                         {% endwith %}
                     </div>

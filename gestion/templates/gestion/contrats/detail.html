@@ -1,0 +1,50 @@
+{% extends 'gestion/base.html' %}
+{% load currency %}
+
+{% block page_title %}Détails du Contrat{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-info-circle"></i> Détails du Contrat #{{ contrat.id }}</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-3">Client</dt>
+                    <dd class="col-sm-9">{{ contrat.client }}</dd>
+
+                    <dt class="col-sm-3">Véhicule</dt>
+                    <dd class="col-sm-9">{{ contrat.vehicule }}</dd>
+
+                    <dt class="col-sm-3">Date début</dt>
+                    <dd class="col-sm-9">{{ contrat.date_debut|date:"d/m/Y" }}</dd>
+
+                    <dt class="col-sm-3">Date fin</dt>
+                    <dd class="col-sm-9">{{ contrat.date_fin|date:"d/m/Y" }}</dd>
+
+                    <dt class="col-sm-3">Jours restants</dt>
+                    <dd class="col-sm-9">{% if jours_restants is not None %}{{ jours_restants }}{% else %}-{% endif %}</dd>
+
+                    <dt class="col-sm-3">Montant total</dt>
+                    <dd class="col-sm-9">{{ contrat.montant_total|format_fcfa }}</dd>
+
+                    <dt class="col-sm-3">Statut</dt>
+                    <dd class="col-sm-9">{{ contrat.get_statut_display }}</dd>
+                </dl>
+
+                <div class="mt-3">
+                    <a href="{% url 'contrat_pdf' contrat.id %}" class="btn btn-outline-secondary me-2" target="_blank"><i class="fas fa-file-pdf"></i> Télécharger PDF</a>
+                    {% if contrat.statut == 'actif' %}
+                    <a href="{% url 'retour_contrat' contrat.id %}" class="btn btn-success me-2"><i class="fas fa-undo"></i> Retour</a>
+                    <a href="{% url 'rupture_contrat' contrat.id %}" class="btn btn-warning me-2"><i class="fas fa-times-circle"></i> Rompre</a>
+                    {% endif %}
+                    <a href="{% url 'liste_contrats' %}" class="btn btn-secondary">Retour à la liste</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
