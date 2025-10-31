@@ -9,7 +9,11 @@
 </h1>
 {% endblock %}
 
-{% block nav-global %}{% endblock %}
+{% block nav-global %}
+<div class="admin-global-links" style="margin-top:8px;">
+    <a href="{% url 'index' %}" class="button" style="background:transparent;color:var(--text-gray);border:1px solid var(--border-color);padding:6px 10px;border-radius:6px;">Retour au site</a>
+</div>
+{% endblock %}
 
 {% block extrastyle %}
 <link rel="stylesheet" href="{% static 'admin/css/custom_admin.css' %}">

@@ -1,20 +1,23 @@
-/* Custom Admin Theme - Blue/White/Black */
+/* Custom Admin Theme - ACA Location (uses --primary-color / --primary-dark) */
 :root {
-    --primary-blue: #1a73e8;
-    --primary-dark: #1557b0;
-    --secondary-blue: #4285f4;
-    --dark-bg: #202124;
-    --dark-secondary: #303134;
+    /* Défauts cohérents avec le thème principal */
+    --primary-color: #ff6b00;
+    --primary-dark: #e55a00;
     --text-light: #ffffff;
-    --text-gray: #9aa0a6;
-    --border-color: #3c4043;
+    --text-gray: #6c6c6c;
+    --border-color: #e6e6e6;
 }
 
 /* Header & Branding */
 #header {
-    background: var(--primary-blue);
-    color: white;
-    padding: 15px 20px;
+    background: var(--primary-color);
+    color: var(--text-light);
+    padding: 18px 24px;
+}
+
+#header h1, #header h1 a {
+    color: var(--text-light) !important;
+    font-weight: 700;
 }
 
 .dashboard #content {
@@ -25,10 +28,11 @@
 /* Cards & Stats */
 .stat-card {
     background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
     margin-bottom: 20px;
-    transition: transform 0.2s;
+    transition: transform 0.18s ease-in-out;
+    border: 1px solid var(--border-color);
 }
 
 .stat-card:hover {
@@ -36,18 +40,18 @@
 }
 
 .card-blue {
-    border-left: 4px solid var(--primary-blue);
+    border-left: 4px solid var(--primary-color);
 }
 
 /* Tables */
 #result_list {
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
 }
 
 #result_list thead th {
-    background: var(--primary-blue);
+    background: var(--primary-color);
     color: white;
     padding: 12px;
 }
@@ -58,23 +62,25 @@
 
 /* Buttons */
 .button, input[type=submit], input[type=button], .submit-row input {
-    background: var(--primary-blue);
+    background: var(--primary-color);
     color: white;
-    border-radius: 4px;
-    padding: 8px 16px;
+    border-radius: 8px;
+    padding: 12px;
     border: none;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.18s, transform 0.12s;
+    width: auto;
 }
 
 .button:hover, input[type=submit]:hover, input[type=button]:hover {
     background: var(--primary-dark);
+    transform: translateY(-2px);
 }
 
 /* Sidebar */
 .sidebar {
     background: white;
-    border-right: 1px solid #e0e0e0;
+    border-right: 1px solid var(--border-color);
     padding: 20px 0;
 }
 
@@ -88,25 +94,25 @@
 
 .sidebar .nav-item .nav-link:hover,
 .sidebar .nav-item .nav-link.active {
-    background: rgba(26,115,232,0.1);
-    color: var(--primary-blue);
+    background: rgba(255,107,0,0.07);
+    color: var(--primary-color);
 }
 
-/* Dark Mode */
+/* Dark Mode: keep basic compatibility */
 @media (prefers-color-scheme: dark) {
     body {
-        background: var(--dark-bg);
+        background: #121212;
         color: var(--text-light);
     }
     
     .stat-card {
-        background: var(--dark-secondary);
-        border: 1px solid var(--border-color);
+        background: #1e1e1e;
+        border: 1px solid #2a2a2a;
     }
     
     .sidebar {
-        background: var(--dark-secondary);
-        border-color: var(--border-color);
+        background: #1e1e1e;
+        border-color: #2a2a2a;
     }
     
     .sidebar .nav-item .nav-link {
@@ -114,12 +120,12 @@
     }
     
     #result_list tbody tr {
-        background: var(--dark-secondary);
+        background: #1b1b1b;
         color: var(--text-light);
     }
     
     #result_list tbody tr:hover {
-        background: rgba(26,115,232,0.1);
+        background: rgba(255,107,0,0.06);
     }
 }
 
@@ -160,12 +166,12 @@
 /* Image Preview Enhancements */
 .image-preview {
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transition: transform 0.2s;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    transition: transform 0.18s;
 }
 
 .image-preview:hover {
-    transform: scale(1.05);
+    transform: scale(1.04);
 }
 
 /* Custom Filters */
@@ -185,10 +191,10 @@
 /* Status Tags */
 .status-tag {
     display: inline-block;
-    padding: 4px 8px;
+    padding: 6px 10px;
     border-radius: 12px;
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .status-active {
@@ -205,3 +211,80 @@
     background-color: #EA4335;
     color: white;
 }
+
+/* Admin: module headers and modules style adjustments */
+.module h2, .module caption {
+    background: var(--primary-color);
+    color: #fff;
+    padding: 10px 12px;
+    border-radius: 8px 8px 0 0;
+}
+
+.module {
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+    overflow: hidden;
+}
+
+.selector-chosen h2 {
+    background: var(--primary-color) !important;
+    color: #fff !important;
+}
+
+/* Ensure buttons in admin follow orange theme */
+.grp-button, .button, input[type=submit], .submit-row input {
+    background: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    color: #fff !important;
+}
+
+.grp-button:hover, .button:hover, input[type=submit]:hover, .submit-row input:hover {
+    background: var(--primary-dark) !important;
+    border-color: var(--primary-dark) !important;
+}
+
+/* Make header brand stronger */
+#header .branding {
+    font-weight: 700;
+}
+
+/* Login specific helper (used by custom login template) */
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, rgba(255,107,0,0.12), rgba(229,90,0,0.06));
+}
+
+.login-box {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    padding: 40px;
+    max-width: 420px;
+    width: 100%;
+    border: 1px solid var(--border-color);
+}
+
+.login-header { text-align:center; margin-bottom:18px; }
+.login-header h2{ color:var(--primary-color); font-weight:800; margin:0; }
+
+.login-box .form-row input[type=text], .login-box .form-row input[type=password] {
+    border: 2px solid #e9e9e9;
+    border-radius: 8px;
+    padding: 12px 15px;
+    width: 100%;
+    transition: border-color 0.12s, box-shadow 0.12s;
+}
+
+.login-box .form-row input[type=text]:focus, .login-box .form-row input[type=password]:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 6px 18px rgba(255,107,0,0.08);
+    outline: none;
+}
+
+.password-forgot-link { text-align:center; margin-top:20px; padding-top:12px; border-top:1px solid var(--border-color); }
+.password-forgot-link a{ color:var(--primary-color); text-decoration:none; }
+.password-forgot-link a:hover{ text-decoration:underline; }
