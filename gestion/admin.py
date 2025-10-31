@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 from django.urls import path, reverse
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Client, Vehicule, Contrat
+from django.contrib.auth.models import User
 
 
 class GestionAdminSite(AdminSite):
@@ -56,6 +57,7 @@ class GestionAdminSite(AdminSite):
             'top_vehicules': top_vehicules,
             'contrats_recent': Contrat.objects.all().order_by('-date_creation')[:5],
             'vehicules_disponibles': Vehicule.objects.filter(disponible=True).order_by('prix_journalier')[:5],
+            'total_users': User.objects.count(),
         }
 
     def index(self, request, extra_context=None):
