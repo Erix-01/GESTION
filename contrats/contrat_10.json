@@ -1,0 +1,25 @@
+{
+    "contrat_id": 10,
+    "client": {
+        "nom": "AGBLETOR",
+        "prenom": "KOUASSI ERIC",
+        "telephone": "0203040505",
+        "email": "erixkouassi@gmail.com"
+    },
+    "vehicule": {
+        "type": "moto",
+        "marque": "MOTO3",
+        "modele": "MOTO3",
+        "immatriculation": "233432214"
+    },
+    "dates": {
+        "creation": "2025-10-31T10:11:17.705136+00:00",
+        "debut": "2025-10-31",
+        "fin": "2025-11-23"
+    },
+    "details_location": {
+        "nb_jours": 23,
+        "montant_total": 4887500.0,
+        "statut": "rompu"
+    }
+}

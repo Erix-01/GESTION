@@ -28,6 +28,7 @@ urlpatterns = [
     path('export/contrats/', views.export_contrats_csv, name='export_contrats_csv'),
     path('export/clients/en-retard/', views.export_clients_en_retard_csv, name='export_clients_en_retard_csv'),
     path('export/vehicules/loues/', views.export_vehicules_loues_csv, name='export_vehicules_loues_csv'),
+    path('clients/en-retard/', views.clients_en_retard, name='clients_en_retard'),
 
     # Stats for admin dashboard
     path('api/stats/contrats-par-mois/', views.stats_contrats_par_mois, name='stats_contrats_par_mois'),

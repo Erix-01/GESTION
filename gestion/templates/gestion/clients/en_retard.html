@@ -1,0 +1,41 @@
+{% extends 'gestion/base.html' %}
+
+{% block page_title %}Clients en retard{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-danger text-white">
+        <h5 class="mb-0"><i class="fas fa-exclamation-triangle"></i> Clients avec contrats en retard</h5>
+    </div>
+    <div class="card-body">
+        {% if rows %}
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Contrat ID</th>
+                        <th>Client</th>
+                        <th>Véhicule</th>
+                        <th>Date Fin prévue</th>
+                        <th>Jours de retard</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in rows %}
+                    <tr>
+                        <td>{{ row.contrat.id }}</td>
+                        <td>{{ row.contrat.client }}</td>
+                        <td>{{ row.contrat.vehicule }}</td>
+                        <td>{{ row.contrat.date_fin|date:"d/m/Y" }}</td>
+                        <td>{% if row.jours_retard is not None %}{{ row.jours_retard }}{% else %}-{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p>Aucun client en retard.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

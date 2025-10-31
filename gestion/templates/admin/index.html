@@ -1,9 +1,23 @@
-{% extends 'gestion/base.html' %}
+{% extends 'admin/base_site.html' %}
+{% load static %}
 
 {% block page_title %}Administration - Tableau de bord{% endblock %}
 
 {% block content %}
-<div class="row">
+<div class="dashboard container-fluid">
+    <div class="admin-hero mb-4" style="background:var(--primary-color);padding:18px;border-radius:8px;color:var(--text-light);">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h2 style="margin:0;font-weight:800;">Administration <small style="opacity:0.9;font-weight:400;">ACA Location</small></h2>
+                <p style="margin:0.2rem 0 0;opacity:0.9">Bienvenue sur le panneau d'administration</p>
+            </div>
+            <div>
+                <a href="{% url 'index' %}" class="button" id="return-site-btn">Retour au site</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
     <!-- Stat cards similar to public dashboard -->
     <div class="col-md-3 mb-4">
         <div class="card stat-card">

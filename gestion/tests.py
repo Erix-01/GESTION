@@ -148,3 +148,49 @@ class GestionTestCase(TestCase):
         # Test accès aux exports
         response = self.client.get(reverse('export_clients_csv'))
         self.assertEqual(response.status_code, 200)
+
+    def test_new_exports_and_clients_en_retard(self):
+        """Vérifie les nouveaux exports CSV et la page clients en retard."""
+        # Créer un contrat en retard
+        past_fin = date.today() - timedelta(days=5)
+        contrat_retard = Contrat.objects.create(
+            client=self.test_client,
+            vehicule=self.test_vehicule,
+            date_debut=past_fin - timedelta(days=10),
+            date_fin=past_fin,
+            nb_jours=10,
+            montant_total=Decimal('500.00'),
+            statut='en_retard'
+        )
+
+        # Créer un contrat actif (véhicule loué)
+        contrat_actif = Contrat.objects.create(
+            client=self.test_client,
+            vehicule=self.test_vehicule,
+            date_debut=date.today(),
+            date_fin=date.today() + timedelta(days=3),
+            nb_jours=3,
+            montant_total=Decimal('150.00'),
+            statut='actif'
+        )
+
+        # Export clients en retard
+        response = self.client.get(reverse('export_clients_en_retard_csv'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], 'text/csv')
+        content = response.content.decode('utf-8')
+        self.assertIn('Nom', content)
+        self.assertIn(str(contrat_retard.id), content)
+
+        # Export véhicules loués
+        response = self.client.get(reverse('export_vehicules_loues_csv'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], 'text/csv')
+        content = response.content.decode('utf-8')
+        self.assertIn(self.test_vehicule.immatriculation, content)
+
+        # Page clients en retard
+        response = self.client.get(reverse('clients_en_retard'))
+        self.assertEqual(response.status_code, 200)
+        page_text = response.content.decode('utf-8')
+        self.assertIn(self.test_client.nom, page_text)

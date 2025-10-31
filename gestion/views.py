@@ -84,6 +84,31 @@ def export_vehicules_loues_csv(request):
 
     return response
 
+
+@staff_member_required
+def clients_en_retard(request):
+    """Affiche une page listant les clients avec contrats en retard."""
+    contrats_retard = Contrat.objects.filter(statut='en_retard').select_related('client', 'vehicule')
+
+    rows = []
+    today = timezone.now().date()
+    for c in contrats_retard:
+        jours = (today - c.date_fin).days if c.date_fin else None
+        rows.append({'contrat': c, 'jours_retard': jours})
+
+    # Paginate the rows
+    page = request.GET.get('page', 1)
+    paginator = Paginator(rows, 25)
+    try:
+        page_obj = paginator.page(page)
+    except:
+        page_obj = paginator.page(1)
+
+    return render(request, 'gestion/clients/en_retard.html', {
+        'rows': page_obj,
+        'today': today,
+    })
+
 @staff_member_required
 @staff_member_required
 def audit_list(request):
