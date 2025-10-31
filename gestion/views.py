@@ -393,9 +393,25 @@ def retour_contrat(request, id):
         messages.success(request, f'Véhicule {vehicule} retourné avec succès!')
         return redirect('liste_contrats')
     
+    # Calculs pour affichage
+    remboursement = None
+    try:
+        jours_restants = contrat.jours_restants()
+    except Exception:
+        jours_restants = None
+
+    # Si retour anticipé (aujourd'hui avant la date de fin), calculer remboursement estimé
+    if today < (contrat.date_fin or today):
+        try:
+            remboursement = contrat.calculer_remboursement(timezone.now())
+        except Exception:
+            remboursement = None
+
     return render(request, 'gestion/contrats/retour.html', {
         'contrat': contrat,
-        'today': today
+        'today': today,
+        'remboursement': remboursement,
+        'jours_restants': jours_restants,
     })
 
 @staff_member_required

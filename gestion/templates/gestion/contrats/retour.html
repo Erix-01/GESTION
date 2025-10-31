@@ -27,15 +27,13 @@
                     <div class="alert alert-warning">
                         <h6><i class="fas fa-info-circle"></i> Retour anticipé</h6>
                         <p>Retour avant la date prévue. Un remboursement partiel sera calculé.</p>
-                        {% with remboursement = contrat.calculer_remboursement(timezone.now) %}
+                        {% if remboursement %}
                         <p><strong>Remboursement estimé:</strong> {{ remboursement|format_fcfa }}</p>
-                        {% endwith %}
+                        {% endif %}
                     </div>
                     {% endif %}
                     <p><strong>Date de fin:</strong> {{ contrat.date_fin|date:"d/m/Y" }}</p>
-                    {% with jours_restants = contrat.calculer_jours_restants %}
-                    <p><strong>Jours restants:</strong> {{ jours_restants }}</p>
-                    {% endwith %}
+                    <p><strong>Jours restants:</strong> {% if jours_restants is not None %}{{ jours_restants }}{% else %}-{% endif %}</p>
                     <p><strong>Montant total:</strong> {{ contrat.montant_total|format_fcfa }}</p>
                 </div>
                 
